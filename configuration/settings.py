@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'apps.core',
     'apps.atracoes',
     'apps.comentarios',
@@ -74,7 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'configuration.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
