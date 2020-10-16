@@ -1,3 +1,6 @@
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
@@ -12,7 +15,7 @@ class PontoTuristicoViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, )
     authentication_classes = (TokenAuthentication, )
     search_fields = ('nome', 'descricao', 'endereco__linha1')
-    lookup_field = 'nome'
+    lookup_field = 'id'
 
     def get_queryset(self):
         id = self.request.query_params.get('id', None)
@@ -30,3 +33,15 @@ class PontoTuristicoViewSet(ModelViewSet):
             query_set = query_set.filter(descricao__iexact=descricao)
 
         return query_set
+
+    @action(methods=['post'], detail=True)
+    def associa_atracoes(self, request, id):
+        atracoes = request.data['ids']
+
+        ponto = PontoTuristico.objects.get(id=id)
+
+        ponto.atracoes.set(atracoes)
+
+        ponto.save()
+
+        return Response(status=status.HTTP_201_CREATED)
